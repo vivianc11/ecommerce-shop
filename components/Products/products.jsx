@@ -3,8 +3,8 @@ import { Grid } from "@material-ui/core";
 
 
 const products = [
-    {id: 1, name: 'Shoes', description: 'Running shoes'},
-    {id: 2, name: 'Macbook', description: 'Apple Macbook'},
+    {id: 1, name: 'Shoes', description: 'Running shoes', price: '$60'},
+    {id: 2, name: 'Macbook', description: 'Apple Macbook', price: '$800'},
 ];
 
 const Products = () => {
@@ -13,7 +13,8 @@ const Products = () => {
             {products.map((product) => (
                 // Every time you're looping through something in jsx, you need to have an id
                 <Grid item key={product.id} xs={12} sm={6} md={4} lg={3}> 
-                    <Product />
+                    // Passing each product as a prop
+                    <Product product={product} />
                 </Grid>
             ))}
         </Grid>
