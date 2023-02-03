@@ -1,4 +1,4 @@
-// styling the components - this is how styling works with material ui
+// styling product.jsx component - this is how styling works with material ui
 
 import { makeStyles } from "@material-ui/core/styles";
 
