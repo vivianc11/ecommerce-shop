@@ -3,8 +3,13 @@ import { Card, CardMedia, CardContent, CardActions, Typography, IconButton } fro
 import { AddShoppingCart, CallMissedSharp } from '@material-ui/icons';
 import { mergeClasses } from '@material-ui/styles';
 
+import makeStyles from './styles';
+
 const Product = ({ product }) => {
-  return (
+
+    const classes = makeStyles();
+
+    return (
     // Will have the layout for a product
     <Card className={classes.root}>
         <CardMedia className={classes.media} image='' title={product.name} />
