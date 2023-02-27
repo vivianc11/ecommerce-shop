@@ -4,7 +4,7 @@ import { Grid } from "@material-ui/core";
 import Product from "./Product/Product";
 import useStyles from './style';
 
-const Products = ({ products }) => {
+const Products = ({ products, onAddToCart }) => {
 
     const classes = useStyles();
 
@@ -17,7 +17,7 @@ const Products = ({ products }) => {
                     // Every time you're looping through something in jsx, you need to have an id
                     <Grid item key={product.id} xs={12} sm={6} md={4} lg={3}> 
                         {/* Passing each product as a prop to the product componenet*/}
-                        <Product product={product} />
+                        <Product product={product} onAddToCart={onAddToCart} />
                     </Grid>
                 ))}
             </Grid>
