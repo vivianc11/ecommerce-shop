@@ -1,21 +1,29 @@
 import React from 'react';
 import { Container, Typography, Button, Grid } from '@material-ui/core';
+import { Link } from 'react-router-dom';
+
+import CartItem from './CartItem/CartItem';
 import useStyles from './styles';
 
-const Cart = ({ cart }) => {
+const Cart = ({ cart, handleUpdateCartQty, handleRemoveFromCart, handleEmptyCart }) => {
     const classes = useStyles();
-    const isEmpty = cart.line_items.length === 0;
 
-    const EmptyCart = () => {
-        <Typography variant='subtitle1'>You have no items in your shopping cart!</Typography>
-    }
+    // when the cart is empty
+    const EmptyCart = () => (
+        <Typography variant='subtitle1'>
+            You have no items added into your shopping cart!
+            <Link to='/' className={classes.link}> Start adding items</Link>
+        </Typography>
+    )
 
-    const FilledCart = () => {
+    // when the cart is filled
+    const FilledCart = () => (
         <>
         <Grid container spacing={3}>
+            {/* mapping through the items in the cart */}
             {cart.line_items.map((item) => (
                 <Grid item xs={12} sm={4} key={item.id} >
-                    <div>{item.name}</div>
+                    <CartItem item={item} />
                 </Grid>
             ))}
         </Grid>
@@ -29,13 +37,16 @@ const Cart = ({ cart }) => {
             </div>
         </div>
         </>
-    }
+    )
+
+    // waiting for the line_items to be fetched from the API otherwise, it would error out
+    if(!cart.line_items) return 'Loading...';
 
   return (
     <Container>
         <div className={classes.toolbar} />
-        <Typography className={classes.title} variant="h3">Your Shopping Cart</Typography>
-        { isEmpty ? <EmptyCart /> : <FilledCart /> }
+        <Typography className={classes.title} variant="h3" gutterBottom>Your Shopping Cart</Typography>
+        { !cart.line_items.length ? <EmptyCart /> : <FilledCart /> }
     </Container>
   )
 }
