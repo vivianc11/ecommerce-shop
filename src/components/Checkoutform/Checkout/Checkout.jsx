@@ -31,9 +31,11 @@ const Checkout = ({ cart }) => {
         generateToken();
     },[cart])
 
+    // adjusting the activeStep
     const nextStep = () => setActiveStep((previousActiveStep) => previousActiveStep + 1);
     const backStep = () => setActiveStep((previousActiveStep) => previousActiveStep - 1);
 
+    // handling submitting the addressForm
     const next = (data) => {
         setShippingData(data);
 
