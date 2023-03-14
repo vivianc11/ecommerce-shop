@@ -22,7 +22,7 @@ const AddressForm = ({ checkoutToken, next }) => {
     const fetchShippingCountries = async(checkoutTokenId) => {
         const { countries } = await commerce.services.localeListShippingCountries(checkoutTokenId);
 
-        console.log(countries);
+        // console.log(countries);
         setshippingCountries(countries);
         setshippingCountry(Object.keys(countries)[0]);
     }
