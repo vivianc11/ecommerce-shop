@@ -11,6 +11,7 @@ const Checkout = ({ cart }) => {
 
     const [activeStep, setActiveStep] = useState(0);
     const [checkoutToken, setcheckoutToken] = useState(null);
+    const [shippingData, setShippingData] = useState({});
     const classes = useStyles();
 
     useEffect(() => {
@@ -28,7 +29,16 @@ const Checkout = ({ cart }) => {
         }
 
         generateToken();
-    },[])
+    },[cart])
+
+    const nextStep = () => setActiveStep((previousActiveStep) => previousActiveStep + 1);
+    const backStep = () => setActiveStep((previousActiveStep) => previousActiveStep - 1);
+
+    const next = (data) => {
+        setShippingData(data);
+
+        nextStep();
+    }
 
     const Confirmation = () => (
         <div>
@@ -36,7 +46,7 @@ const Checkout = ({ cart }) => {
         </div>
     );
 
-    const Form = () => activeStep === 0 ? <AddressForm checkoutToken={checkoutToken}/> : <PaymentForm />
+    const Form = () => activeStep === 0 ? <AddressForm checkoutToken={checkoutToken} next={next} /> : <PaymentForm />
 
   return (
     <>
@@ -53,7 +63,7 @@ const Checkout = ({ cart }) => {
                     ))}
                 </Stepper>
                 {/* if the active step is on the last step, then show the confirmation componenent */}
-                {activeStep === steps.length ? <Confirmation /> : <Form /> }
+                {activeStep === steps.length ? <Confirmation /> : checkoutToken && <Form /> }
             </Paper>
 
         </main>
