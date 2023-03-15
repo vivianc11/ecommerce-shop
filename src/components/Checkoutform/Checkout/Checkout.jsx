@@ -30,7 +30,7 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
             } catch (error) {
                 // when page is refreshed after hitting checkout, the user won't have their cart anymore and cause problems
                 // if there's an error, it will push to go back to the homepage
-                history.pushState('/');
+                history.push('/');
             }
         }
 
