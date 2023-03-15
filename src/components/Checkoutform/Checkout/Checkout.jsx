@@ -5,7 +5,7 @@ import useStyles from './styles';
 import AddressForm from '../AddressForm';
 import PaymentForm from '../PaymentForm';
 import { commerce } from '../../../lib/commerce';
-import { SettingsBackupRestoreSharp } from '@material-ui/icons';
+// import { SettingsBackupRestoreSharp } from '@material-ui/icons';
 
 
 const steps = ['Shipping Address', 'Payment Details']
@@ -14,6 +14,7 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
     const [activeStep, setActiveStep] = useState(0);
     const [checkoutToken, setcheckoutToken] = useState(null);
     const [shippingData, setShippingData] = useState({});
+    const [isFinished, setIsFinished] = useState(false);
     const classes = useStyles();
     const history = useHistory();
 
@@ -27,6 +28,7 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
                 setcheckoutToken(token);
 
             } catch (error) {
+                // when page is refreshed after hitting checkout, the user won't have their cart anymore and cause problems
                 // if there's an error, it will push to go back to the homepage
                 history.pushState('/');
             }
@@ -57,6 +59,15 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
             <br />
             <Button component={Link} to='/' variant='outlined' type='button'>Back to Home</Button>
         </>
+    ) : isFinished ? (
+        <>
+            <div>
+                <Typography variant='h5'>Thank you for your purchase!</Typography>
+                <Divider className={classes.divider} />
+            </div>
+            <br />
+            <Button component={Link} to='/' variant='outlined' type='button'>Back to Home</Button>
+        </>
     ) : (
         <div className={classes.spinner}>
             <CircularProgress />
@@ -71,9 +82,15 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
         </>
     }
 
+    const timeout = () => {
+        setTimeout(() => {
+            setIsFinished(true)
+        }, 3000);
+    }
+
     const Form = () => activeStep === 0 
     ? <AddressForm checkoutToken={checkoutToken} next={next} /> 
-    : <PaymentForm checkoutToken={checkoutToken} backStep={backStep} nextStep={nextStep} shippingData={shippingData} onCaptureCheckout={onCaptureCheckout}/>
+    : <PaymentForm checkoutToken={checkoutToken} backStep={backStep} nextStep={nextStep} shippingData={shippingData} onCaptureCheckout={onCaptureCheckout} timeout={timeout}/>
 
   return (
     <>
