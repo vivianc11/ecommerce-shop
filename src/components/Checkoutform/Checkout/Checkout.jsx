@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Paper, Stepper, Step, StepLabel, Typography, CircularProgress, Divider, Button } from '@material-ui/core';
 import useStyles from './styles';
 import AddressForm from '../AddressForm';
@@ -44,7 +45,7 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
     }
 
     // displaying the confirmation page after finishing payment
-    const Confirmation = () => order.customer ? (
+    let Confirmation = () => order.customer ? (
         <>
             <div>
                 <Typography variant='h5'>Thank you for your purchase, firstName lastName!</Typography>
@@ -59,6 +60,14 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
             <CircularProgress />
         </div>
     );
+
+    if (error) {
+        <>
+        <Typography variant='h5'>Error: {error} </Typography>
+        <br />
+        <Button component={Link} to='/' variant='outlined' type='button'>Back to Home</Button>
+        </>
+    }
 
     const Form = () => activeStep === 0 
     ? <AddressForm checkoutToken={checkoutToken} next={next} /> 
