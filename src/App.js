@@ -7,6 +7,7 @@ const App = () => {
 
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState({});
+  const [order, setOrder] = useState({});
 
   const fetchProducts = async () => {
     const { data } = await commerce.products.list();
@@ -38,6 +39,23 @@ const App = () => {
   // emptying entire cart
   const handleEmptyCart = async () => {
     setCart(await commerce.cart.empty());
+  }
+
+  // refrshing the cart upon completing an order 
+  const refreshCart = async () => {
+    const newCart = await commerce.cart.refresh();
+
+    setCart(newCart);
+  }
+
+  const handleCaptureCheckout = async (checkoutTokenId, newOrder) => {
+    try {
+      const incomingOrder = await commerce.checkout.capture(checkoutTokenId, newOrder);
+
+      setOrder(incomingOrder);
+    } catch (error) {
+
+    }
   }
 
   useEffect(() => {
