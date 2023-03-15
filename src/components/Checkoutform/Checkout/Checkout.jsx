@@ -8,7 +8,7 @@ import { SettingsBackupRestoreSharp } from '@material-ui/icons';
 
 
 const steps = ['Shipping Address', 'Payment Details']
-const Checkout = ({ cart }) => {
+const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
 
     const [activeStep, setActiveStep] = useState(0);
     const [checkoutToken, setcheckoutToken] = useState(null);
@@ -49,7 +49,9 @@ const Checkout = ({ cart }) => {
         </div>
     );
 
-    const Form = () => activeStep === 0 ? <AddressForm checkoutToken={checkoutToken} next={next} /> : <PaymentForm checkoutToken={checkoutToken} backStep={backStep}/>
+    const Form = () => activeStep === 0 
+    ? <AddressForm checkoutToken={checkoutToken} next={next} /> 
+    : <PaymentForm checkoutToken={checkoutToken} backStep={backStep} nextStep={nextStep} shippingData={shippingData} onCaptureCheckout={onCaptureCheckout}/>
 
   return (
     <>

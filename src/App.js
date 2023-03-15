@@ -8,11 +8,13 @@ const App = () => {
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState({});
   const [order, setOrder] = useState({});
+  const [errorMessage, setErrorMessage] = useState('');
 
   const fetchProducts = async () => {
     const { data } = await commerce.products.list();
 
-    setProducts(data); // Setting the received data as products
+    // Setting the received data as products
+    setProducts(data); 
   }
 
   // making the cart dynamic and seeing what's in the cart
@@ -23,7 +25,8 @@ const App = () => {
   
   // adding items to the cart
   const handleAddToCart = async (productId, quantity) => {
-    setCart(await commerce.cart.add(productId, quantity)); // this is the cart after the item as been added
+    // this is the cart after the item as been added
+    setCart(await commerce.cart.add(productId, quantity)); 
   }
 
   // updating cart quantitiy
@@ -54,7 +57,8 @@ const App = () => {
 
       setOrder(incomingOrder);
     } catch (error) {
-
+      // getting meaningful message on why the error occurred
+      setErrorMessage(error.data.error.message);
     }
   }
 
@@ -85,7 +89,12 @@ const App = () => {
           </Route>
 
           <Route exact path='/checkout'>
-            <Checkout cart={cart}/>
+            <Checkout 
+              cart={cart}
+              order={order}
+              onCaptureCheckout={handleCaptureCheckout}
+              error={errorMessage}
+            />
           </Route>
 
         </Switch>

@@ -7,9 +7,9 @@ import Review from './Review';
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
 
 
-const PaymentForm = ({ checkoutToken, backStep }) => {
+const PaymentForm = ({ checkoutToken, backStep, nextStep, shippingData, onCaptureCheckout }) => {
 
-    const handleSubmit = (e, elements, stripe) => {
+    const handleSubmit = aysnc (e, elements, stripe) => {
         e.preventDefault();
 
         if(!stripe || !elements) return;
@@ -24,7 +24,11 @@ const PaymentForm = ({ checkoutToken, backStep }) => {
             // displaying all of the items in the cart, customer data/address details, shipping details, shipping options, payment information
             const orderData = {
                 line_items: checkoutToken.line_items,
-                customer: { firstname: shippingData.firstName, lastname: shippingData.lastName, email:shippingData.email },
+                customer: { 
+                    firstname: shippingData.firstName, 
+                    lastname: shippingData.lastName, 
+                    email:shippingData.email 
+                },
                 shipping: { 
                     name: 'Primary', 
                     street: shippingData.address1, 
@@ -33,8 +37,17 @@ const PaymentForm = ({ checkoutToken, backStep }) => {
                     postal_zip_code: shippingData.zip,
                     country: shippingData.shippingCountry
                 },
-                fulfillment: { shipping_method: shippingData.shippingOption }
+                fulfillment: { shipping_method: shippingData.shippingOption },
+                payment: { 
+                    gateway: 'stripe', 
+                    stripe: {
+                        payment_method_id: paymentMethod.id
+                }}
             }
+
+            onCaptureCheckout(checkoutToken.id, orderData);
+
+            nextStep();
         }
     }
 
