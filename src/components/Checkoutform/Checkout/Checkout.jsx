@@ -4,6 +4,7 @@ import useStyles from './styles';
 import AddressForm from '../AddressForm';
 import PaymentForm from '../PaymentForm';
 import { commerce } from '../../../lib/commerce';
+import { SettingsBackupRestoreSharp } from '@material-ui/icons';
 
 
 const steps = ['Shipping Address', 'Payment Details']
@@ -48,7 +49,7 @@ const Checkout = ({ cart }) => {
         </div>
     );
 
-    const Form = () => activeStep === 0 ? <AddressForm checkoutToken={checkoutToken} next={next} /> : <PaymentForm checkoutToken={checkoutToken}/>
+    const Form = () => activeStep === 0 ? <AddressForm checkoutToken={checkoutToken} next={next} /> : <PaymentForm checkoutToken={checkoutToken} backStep={backStep}/>
 
   return (
     <>
