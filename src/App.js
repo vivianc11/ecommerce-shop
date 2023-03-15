@@ -44,7 +44,7 @@ const App = () => {
     setCart(await commerce.cart.empty());
   }
 
-  // refrshing the cart upon completing an order 
+  // refreshing the cart upon completing an order 
   const refreshCart = async () => {
     const newCart = await commerce.cart.refresh();
 
@@ -56,6 +56,7 @@ const App = () => {
       const incomingOrder = await commerce.checkout.capture(checkoutTokenId, newOrder);
 
       setOrder(incomingOrder);
+      refreshCart();
     } catch (error) {
       // getting meaningful message on why the error occurred
       setErrorMessage(error.data.error.message);
