@@ -14,7 +14,7 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
     const [activeStep, setActiveStep] = useState(0);
     const [checkoutToken, setcheckoutToken] = useState(null);
     const [shippingData, setShippingData] = useState({});
-    const [isFinished, setIsFinished] = useState(false);
+    // const [isFinished, setIsFinished] = useState(false);
     const classes = useStyles();
     const history = useHistory();
 
@@ -43,6 +43,7 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
 
     // handling submitting the addressForm
     const next = (data) => {
+        // console.log(data);
         setShippingData(data);
 
         nextStep();
@@ -51,25 +52,26 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
     // displaying the confirmation page after finishing payment
     let Confirmation = () => order.customer ? (
         <>
+        {console.log(order)}
             <div>
                 <Typography variant='h5'>Thank you for your purchase, {order.customer.firstname} {order.customer.lastname}!</Typography>
                 <Divider className={classes.divider} />
-                <Typography variant='subtitle2'>Order ref: {order.customer.reference}</Typography>
+                <Typography variant='subtitle2'>Order ref: {order.customer_reference}</Typography>
             </div>
             <br />
-            <Button component={Link} to='/' variant='outlined' type='button'>Back to Home</Button>
-        </>
-    ) : isFinished ? (
-        <>
-            <div>
-                <Typography variant='h5'>Thank you for your purchase!</Typography>
-                <Divider className={classes.divider} />
-            </div>
-            <br />
-            <Button component={Link} to='/' variant='outlined' type='button'>Back to Home</Button>
-        </>
-    ) : (
-        <div className={classes.spinner}>
+            <Button component={Link} to='/' variant='outlined' type='button'>Back to Home</Button> 
+        </> ) :
+    // isFinished ? (
+    //     <>
+    //         <div>
+    //             <Typography variant='h5'>Thank you for your purchase!</Typography>
+    //             <Divider className={classes.divider} />
+    //         </div>
+    //         <br />
+    //         <Button component={Link} to='/' variant='outlined' type='button'>Back to Home</Button>
+    //     </>
+    // ) : 
+        ( <div className={classes.spinner}>
             <CircularProgress />
         </div>
     );
@@ -82,15 +84,15 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
         </>
     }
 
-    const timeout = () => {
-        setTimeout(() => {
-            setIsFinished(true)
-        }, 3000);
-    }
+    // const timeout = () => {
+    //     setTimeout(() => {
+    //         setIsFinished(true)
+    //     }, 3000);
+    // }
 
     const Form = () => activeStep === 0 
     ? <AddressForm checkoutToken={checkoutToken} next={next} /> 
-    : <PaymentForm checkoutToken={checkoutToken} backStep={backStep} nextStep={nextStep} shippingData={shippingData} onCaptureCheckout={onCaptureCheckout} timeout={timeout}/>
+    : <PaymentForm checkoutToken={checkoutToken} backStep={backStep} nextStep={nextStep} shippingData={shippingData} onCaptureCheckout={onCaptureCheckout} /> // removed timeout={timeout}
 
   return (
     <>
