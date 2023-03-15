@@ -43,9 +43,20 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
         nextStep();
     }
 
-    const Confirmation = () => (
-        <div>
-            Confirmation
+    // displaying the confirmation page after finishing payment
+    const Confirmation = () => order.customer ? (
+        <>
+            <div>
+                <Typography variant='h5'>Thank you for your purchase, firstName lastName!</Typography>
+                <Divider className={classes.divider} />
+                <Typography variant='subtitle2'>Order ref: ref</Typography>
+            </div>
+            <br />
+            <Button component={Link} to='/' variant='outlined' type='button'>Back to Home</Button>
+        </>
+    ) : (
+        <div className={classes.spinner}>
+            <CircularProgress />
         </div>
     );
 

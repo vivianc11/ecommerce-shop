@@ -1,7 +1,8 @@
 import React from 'react';
 import { Typography, Button, Divider } from '@material-ui/core';
-import { Elements, CardElement, ElementsConsumer} from '@stripe/react-stripe-js';
+import { Elements, CardElement, ElementsConsumer } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
+
 import Review from './Review';
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
@@ -9,7 +10,7 @@ const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
 
 const PaymentForm = ({ checkoutToken, backStep, nextStep, shippingData, onCaptureCheckout }) => {
 
-    const handleSubmit = aysnc (e, elements, stripe) => {
+    const handleSubmit = async (e, elements, stripe) => {
         e.preventDefault();
 
         if(!stripe || !elements) return;
@@ -18,7 +19,7 @@ const PaymentForm = ({ checkoutToken, backStep, nextStep, shippingData, onCaptur
 
         const { error, paymentMethod } = await stripe.createPaymentMethod({ type: 'card', card: cardElement });
 
-        if(error){
+        if (error) {
             console.log(error)
         } else {
             // displaying all of the items in the cart, customer data/address details, shipping details, shipping options, payment information
@@ -42,8 +43,9 @@ const PaymentForm = ({ checkoutToken, backStep, nextStep, shippingData, onCaptur
                     gateway: 'stripe', 
                     stripe: {
                         payment_method_id: paymentMethod.id
-                }}
-            }
+                    },
+                },
+            };
 
             onCaptureCheckout(checkoutToken.id, orderData);
 
@@ -74,6 +76,6 @@ const PaymentForm = ({ checkoutToken, backStep, nextStep, shippingData, onCaptur
             </Elements>
         </>
     )
-}
+};
 
-export default PaymentForm
+export default PaymentForm;
